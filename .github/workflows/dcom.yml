@@ -1,6 +1,5 @@
 name: Decompile DLL on Push
 
-# This workflow runs whenever you push changes to your repository
 on:
   push:
 
@@ -23,7 +22,6 @@ jobs:
       - name: Download the DLL file
         run: |
           # The URL you want to decompile.
-          # You can edit this line manually to put your download link.
           DLL_URL="https://github.com/kaifcodec/Upload_apk/releases/download/v1.1.4/Assembly-CSharp.dll"
           
           echo "Downloading DLL from $DLL_URL"
@@ -31,8 +29,7 @@ jobs:
         shell: bash
 
       - name: Decompile the DLL to C#
-        run: |
-          ilspycmd --output decompiled_output target.dll
+        run: ilspycmd -o decompiled_output target.dll
         shell: bash
         
       - name: Archive the decompiled output
