@@ -1,0 +1,48 @@
+name: Decompile DLL on Push
+
+# This workflow runs whenever you push changes to your repository
+on:
+  push:
+
+jobs:
+  decompile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK for ILSpy tool
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install ILSpy command-line decompiler
+        run: dotnet tool install -g ilspycmd
+
+      - name: Download the DLL file
+        run: |
+          # The URL you want to decompile.
+          # You can edit this line manually to put your download link.
+          DLL_URL="https://github.com/kaifcodec/Upload_apk/releases/download/v1.1.4/Assembly-CSharp.dll"
+          
+          echo "Downloading DLL from $DLL_URL"
+          curl -L -o target.dll "$DLL_URL"
+        shell: bash
+
+      - name: Decompile the DLL to C#
+        run: |
+          ilspycmd --output decompiled_output target.dll
+        shell: bash
+        
+      - name: Archive the decompiled output
+        run: |
+          zip -r decompiled_output.zip decompiled_output
+        shell: bash
+
+      - name: Upload decompiled files as a downloadable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: decompiled-csharp-code
+          path: decompiled_output.zip
+          retention-days: 1
