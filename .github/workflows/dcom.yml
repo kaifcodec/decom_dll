@@ -22,7 +22,7 @@ jobs:
       - name: Download the DLL file
         run: |
           # The URL you want to decompile.
-          DLL_URL="https://github.com/kaifcodec/Upload_apk/releases/download/v1.1.4/Assembly-CSharp.dll"
+          DLL_URL="https://github.com/kaifcodec/Upload_apk/releases/download/v1.1.5/protobuf-net.dll"
           
           echo "Downloading DLL from $DLL_URL"
           curl -L -o target.dll "$DLL_URL"
